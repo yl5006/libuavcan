@@ -19,8 +19,7 @@ set(opts
     "CMAKE_BUILD_TYPE:STRING:RelWithDebInfo:Debug Release RelWithDebInfo MinSizeRel:Build type."
     "CMAKE_CXX_FLAGS:STRING:::C++ flags."
     "CMAKE_C_FLAGS:STRING:::C flags."
-    "UAVCAN_USE_CPP03:BOOL:OFF::Use C++03 standard."
-    "UAVCAN_PLATFORM:STRING:generic:generic linux stm32:Platform."
+    "UAVCAN_PLATFORM:STRING:generic:generic kinetis linux stm32:Platform."
     "CONTINUOUS_INTEGRATION_BUILD:BOOL:OFF::Disable error redirection and timing tests"
     "UAVCAN_CMAKE_VERBOSE:BOOL:OFF::Verbose CMake configure output"
     )
@@ -99,6 +98,8 @@ if( CMAKE_BUILD_TYPE STREQUAL "Debug" )
                             EXCLUDE_FROM_ALL)
 
             set(GTEST_FOUND ON)
+            set(BUILD_TESTING ON)
+            enable_testing()
         endif()
     endif()
 endif()
@@ -118,6 +119,9 @@ elseif(${UAVCAN_PLATFORM} STREQUAL "stm32")
     message(STATUS "Adding UAVCAN STM32 platform driver")
     add_subdirectory(libuavcan_drivers/posix)
     add_subdirectory(libuavcan_drivers/stm32/driver)
+elseif(${UAVCAN_PLATFORM} STREQUAL "kinetis")
+    message(STATUS "Adding UAVCAN Kinetis platform driver")
+    add_subdirectory(libuavcan_drivers/posix)
+    add_subdirectory(libuavcan_drivers/kinetis/driver)
 endif()
-
 # vim: set et ft=cmake fenc=utf-8 ff=unix sts=4 sw=4 ts=4 :
